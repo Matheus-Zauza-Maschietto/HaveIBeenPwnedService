@@ -12,7 +12,7 @@ export class DomainSearchService {
     let domainBreachEmails: Record<string, string[]> = await this.domainSearchRepository.findDomainBreachEmails(domain);
     let distinctBreaches: string[] = this.getDistincBreachs(domainBreachEmails);
     let breachesInfos: DomainBreachDto[] = await this.getAllBreachesInfos(distinctBreaches);
-    return this.getDomainSearches(domainBreachEmails, breachesInfos);
+    return this.getDomainSearches(domainBreachEmails, breachesInfos, domain);
   }
 
   getDistincBreachs(domainBreachEmails:  Record<string, string[]>): string[] {
@@ -35,13 +35,13 @@ export class DomainSearchService {
     return breachesInfos;
   }
 
-  getDomainSearches(domainEmails: Record<string, string[]>, domainBreaches: DomainBreachDto[]): DomainSearch[] {
+  getDomainSearches(domainEmails: Record<string, string[]>, domainBreaches: DomainBreachDto[], searchDomain: string): DomainSearch[] {
     const searches = [];
     for (const key in domainEmails) {
       const breachesNames = domainEmails[key];
       for (const breachName of breachesNames) {
         const breach = domainBreaches.find(breach => breach.Name === breachName);
-        searches.push(new DomainSearch(breach, key));
+        searches.push(new DomainSearch(breach, `${key}@${searchDomain}`));
       }
     }
     return searches;

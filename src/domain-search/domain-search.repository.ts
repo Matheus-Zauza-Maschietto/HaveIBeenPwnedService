@@ -5,6 +5,19 @@ import { DomainBreachDto } from './dto/domain-breach.dto';
 @Injectable()
 export class DomainSearchRepository {
   async findDomainBreachEmails(domain: string): Promise<Record<string, string[]>> {
+    return {
+        "alias1": [
+         "Adobe"
+        ],
+        "alias2": [
+          "Adobe",
+          "Gawker",
+          "Stratfor"
+        ],
+        "alias3": [
+          "AshleyMadison"
+        ]
+      }
     let response: Response = await fetch(`https://haveibeenpwned.com/api/v3/breaches?domain=${domain}`, {
         method: 'GET',
         headers: {
